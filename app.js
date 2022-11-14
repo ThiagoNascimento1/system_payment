@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require("cors");
 const mercadopago = require('mercadopago');
+const nodemailer = require('nodemailer');
 
 const port = process.env.PORT || 4000;
 
@@ -20,7 +21,7 @@ app.get("/", (req, res) => {
 
 app.post("/create_preference", (req, res) => {
 
-  const items = req.body;
+  const {items} = req.body;
 
   const preference = {
     items,
@@ -35,7 +36,7 @@ app.post("/create_preference", (req, res) => {
   mercadopago.preferences.create(preference)
   .then(function (response) {
     res.json({
-      response
+      id: response.response.id
     });
   })
   .catch(function (error) {
